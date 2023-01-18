@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <title>Attendance</title>
-	  <script>if (document.referrer.indexOf("https://11mnr11.github.io/scanner/") === -1) {
+    <script>if (document.referrer.indexOf("https://11mnr11.github.io/scanner/") === -1) {
     window.location.replace("https://11mnr11.github.io/scanner/");
 }
 </script>
@@ -37,9 +37,9 @@
           </div>
           <br />
           <div class="field">
-            
+
               <input type="submit"  value="SUBMIT"  />
-            
+
           </div>
         </form>
       </div>
@@ -50,20 +50,45 @@
         "https://script.google.com/macros/s/AKfycbxUO1en9MOfIAHLt0mqkTLbXWtJQEGGOo0QxxuZSnkZoVyLnjEHp6xZXwf-X1hb0LTQsg/exec";
       const form = document.forms["Studentdata"];
 
-      form.addEventListener("submit", (e) => {
-        e.preventDefault();
-        fetch(scriptURL, { method: "POST", body: new FormData(form) })
-        // .then(response =>
-        // onclick="window.location.href = 'successform.html';"
-        // //  alert("Thank you! your form is submitted successfully." )
-        //  )
-				.then(() => { 
-        window.location.href = 'successform.html';
+      function getIndianTime() {
+  var date = new Date();
+  var options = {
+      timeZone: "Asia/Kolkata",
+      hour12: false,
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit"
+  };
+  var indianTime = date.toLocaleString("en-IN", options);
+  return indianTime;
+}
+form.addEventListener("submit", (e) => {
 
-          //  window.location.reload(); 
-          })
-				.catch(error => console.error('Error!', error.message))
-			})
+  // Get the form data
+  var formData = new FormData(document.getElementById("Studentdata"));
+
+  // Add the current timestamp to the form data
+  var timestamp = getIndianTime();
+  formData.append("timestamp", timestamp);
+
+  e.preventDefault();
+  //fetch(scriptURL, { method: "POST", body: new FormData(form) })
+  fetch("https://script.google.com/macros/s/AKfycbxUO1en9MOfIAHLt0mqkTLbXWtJQEGGOo0QxxuZSnkZoVyLnjEHp6xZXwf-X1hb0LTQsg/exec", {
+    method: "POST",
+    body: formData
+  })
+
+  .then(() => {
+  window.location.href = 'successform.html';
+
+    //  window.location.reload();
+    })
+  .catch(error => console.error('Error!', error.message))
+})
+
     </script>
   </body>
 </html>
